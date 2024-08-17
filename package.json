@@ -18,17 +18,22 @@
         "prettier": "prettier --write *.json",
         "pretsc": "rimraf dist",
         "tsc": "tsc --build tsconfig.build.json",
-        "pretweet": "npm run tsc",
-        "tweet": "node ./dist/tweet.js",
-        "preauth": "npm run tsc",
-        "auth": "node ./dist/auth.js",
+        "tweet": "node -r ts-node/register/transpile-only ./src/tweet.ts",
+        "auth": "node -r ts-node/register/transpile-only ./src/auth.ts",
+        "parse": "node -r ts-node/register/transpile-only ./src/db/parse.ts",
+        "quote": "node -r ts-node/register/transpile-only ./src/db/randomQuote.ts",
         "pre-commit": "lint-staged"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/yoavain/no-context-mashina.git"
     },
-    "keywords": ["no-context", "mashina", "twitter", "bot"],
+    "keywords": [
+        "no-context",
+        "mashina",
+        "twitter",
+        "bot"
+    ],
     "author": "yoavain",
     "license": "MIT",
     "engines": {
@@ -61,6 +66,7 @@
         "lint-staged": "15.2.9",
         "rimraf": "6.0.1",
         "ts-jest": "29.2.4",
+        "ts-node": "10.9.2",
         "typescript": "5.5.4"
     },
     "dependencies": {
