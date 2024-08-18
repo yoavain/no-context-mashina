@@ -19,11 +19,11 @@
         "pretsc": "rimraf dist",
         "tsc": "tsc --build tsconfig.build.json",
         "tweet": "node -r ts-node/register/transpile-only ./src/tweet.ts",
-        "auth": "node -r ts-node/register/transpile-only ./src/auth.ts",
+        "auth": "node -r ts-node/register/transpile-only src/scripts/auth.ts",
         "parse": "node -r ts-node/register/transpile-only ./src/db/parse.ts",
         "prebuild:image": "npm run tsc",
         "build:image": "docker build --tag no-context-mashina --progress=plain --no-cache --file Dockerfile .",
-        "copy-tokens-to-container": "",
+        "copy-tokens-to-container": "node -r ts-node/register/transpile-only src/scripts/refreshTokenCacheDeploy.ts",
         "pre-commit": "lint-staged"
     },
     "repository": {

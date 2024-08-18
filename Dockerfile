@@ -7,9 +7,9 @@ COPY package-lock.json /usr/app/
 COPY crontab /usr/app/
 COPY dist /usr/app/dist/
 COPY resources/quotes.db /usr/app/resources/
-COPY cache/refresh_tokens /usr/app/ext/cache/refresh_tokens/
 
 RUN apk add --no-cache tzdata
+RUN mkdir -p /usr/app/ext/cache/refresh_tokens
 RUN mkdir -p /usr/app/ext/logs
 RUN chmod 777 -R /usr/app/ext
 RUN npm i --only=production --ignore-scripts

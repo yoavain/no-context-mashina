@@ -3,6 +3,10 @@ import { getRefreshToken, setRefreshToken } from "./refreshTokens";
 
 const { CLIENT_ID, CLIENT_SECRET } = process.env;
 
+if (!CLIENT_ID || !CLIENT_SECRET) {
+    throw new Error("CLIENT_ID, CLIENT_SECRET are required");
+}
+
 const client = new TwitterApi({ clientId: CLIENT_ID, clientSecret: CLIENT_SECRET });
 
 export const getClient = async () => {

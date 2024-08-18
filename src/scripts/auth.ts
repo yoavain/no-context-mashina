@@ -1,7 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require("dotenv").config();
 
-import { setRefreshToken } from "./refreshTokens";
+import { setRefreshToken } from "../refreshTokens";
 import { TwitterApi } from "twitter-api-v2";
 import express from "express";
 
