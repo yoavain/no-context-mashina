@@ -65,4 +65,5 @@ typings/
 /raw-input/
 /raw-input.zip
 /resources/quotes.json
-/resources/cache/refresh_tokens/refresh_token.json
+/cache/refresh_tokens/refresh_token.json
+/Internal.md

@@ -1,0 +1,1 @@
+*/30 * * * * node /usr/app/dist/tweet.js >> /usr/app/ext/logs/no-context-mashina.log

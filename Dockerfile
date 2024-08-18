@@ -1,14 +1,19 @@
 FROM node:20.16.0-alpine3.20@sha256:eb8101caae9ac02229bd64c024919fe3d4504ff7f329da79ca60a04db08cef52
 RUN apk add dumb-init
 
-ENV NODE_ENV production
-
 WORKDIR /usr/app
 COPY package.json /usr/app/
 COPY package-lock.json /usr/app/
-COPY dist /usr/app/
-COPY resources /usr/app/
+COPY crontab /usr/app/
+COPY dist /usr/app/dist/
+COPY resources/quotes.db /usr/app/resources/
+COPY cache/refresh_tokens /usr/app/ext/cache/refresh_tokens/
+
+RUN apk add --no-cache tzdata
+RUN mkdir -p /usr/app/ext/logs
+RUN chmod 777 -R /usr/app/ext
 RUN npm i --only=production --ignore-scripts
+RUN crontab crontab
 
 USER node
-CMD ["dumb-init", "node", "dist/tweet.js"]
+CMD ["crond", "-f"]
