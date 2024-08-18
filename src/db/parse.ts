@@ -12,7 +12,12 @@ const parse = async () => {
     for await (const entry of glob(pattern)) {
         const lyrics = await readFile(entry, { encoding: "utf8" });
         const quotes = lyrics.split("\r\n\r\n").filter(Boolean);
-        quotes.forEach((item) => allQuotes.add(item));
+        quotes.forEach((item) => {
+            if (item.length > 140) {
+                throw new Error(`Quote exceeds 140 characters for file ${entry}: ${item}`);
+            }
+            allQuotes.add(item);
+        });
     }
 
     console.log(`Found ${allQuotes.size} unique quotes`);
