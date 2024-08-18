@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require("dotenv").config();
 
+import { getRandomQuote } from "./db/randomQuote";
 import { getClient } from "./client";
 
 // eslint-disable-next-line @typescript-eslint/no-require-imports
@@ -20,7 +21,8 @@ const postTweet = async (twitterClient: TwitterApi, message: string) => {
 
 const main = async () => {
     const client = await getClient();
-    await postTweet(client, "Testing Twitter API from Node.js");
+    const message = await getRandomQuote();
+    await postTweet(client, message);
 };
 
 main().catch(console.error);
