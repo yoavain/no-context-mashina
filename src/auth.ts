@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require("dotenv").config();
 
+import { setRefreshToken } from "./refreshTokens";
 import { TwitterApi } from "twitter-api-v2";
 import express from "express";
 
@@ -55,6 +56,9 @@ app.get("/redirect", async (req, res) => {
             codeVerifier,
             redirectUri: REDIRECT_URL
         });
+
+        // Save for persistence
+        setRefreshToken(refreshToken);
 
         const message = JSON.stringify({ accessToken, refreshToken, expiresIn }, null, 2);
         console.log(message);

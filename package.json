@@ -51,6 +51,7 @@
         "@tsconfig/node22": "22.0.0",
         "@types/jest": "29.5.12",
         "@types/node": "22.4.0",
+        "@types/persistent-cache": "1.1.3",
         "@typescript-eslint/eslint-plugin": "8.1.0",
         "@typescript-eslint/parser": "8.1.0",
         "cross-env": "7.0.3",
@@ -71,6 +72,7 @@
     },
     "dependencies": {
         "dotenv": "16.4.5",
+        "persistent-cache": "1.1.2",
         "twitter-api-v2": "1.17.2"
     },
     "lint-staged": {
