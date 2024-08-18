@@ -1,17 +1,10 @@
-import path from "node:path";
+import { ENCRYPTED_QUOTES_FILE } from "./consts";
+import { readFile } from "node:fs/promises";
+import { decryptData } from "./encryption";
 
-const QUOTES_FILE = path.resolve(__dirname, "quotes.json");
-
-const getRandomQuote = () => {
-    // eslint-disable-next-line @typescript-eslint/no-require-imports
-    const quotes = require(QUOTES_FILE);
+export const getRandomQuote = async () => {
+    const encryptedQuotes = await readFile(ENCRYPTED_QUOTES_FILE, { encoding: "utf8" });
+    const quotes = JSON.parse(decryptData(encryptedQuotes));
     const randomIndex = Math.floor(Math.random() * quotes.length);
     return quotes[randomIndex];
 };
-
-const main = async () => {
-    const quote = getRandomQuote();
-    console.log(quote);
-};
-
-main().catch(console.error);
