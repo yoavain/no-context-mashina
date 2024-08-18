@@ -15,7 +15,7 @@ const copyRefreshTokenCacheIntoContainer = () => {
     const location = "/usr/app/ext/cache/refresh_tokens/refresh_token.json";
     console.log(`Copying refresh token cache into container with ID ${containerId} from ${TOKENS_CACHE_FILE} to ${location}`);
 
-    const copy = spawnSync("docker", ["cp", TOKENS_CACHE_FILE, `${containerId}:${location}`], { encoding : "utf8" });
+    const copy = spawnSync("docker", ["cp", "-a", TOKENS_CACHE_FILE, `${containerId}:${location}`], { encoding : "utf8" });
     if (copy.error) {
         throw new Error(`Error executing copy command: ${copy.error}`);
     }
