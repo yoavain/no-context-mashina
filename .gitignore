@@ -64,4 +64,4 @@ typings/
 /.eslint-cache/
 /raw-input/
 /raw-input.zip
-/src/db/quotes.json
+/resources/quotes.json

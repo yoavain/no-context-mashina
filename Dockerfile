@@ -7,6 +7,7 @@ WORKDIR /usr/app
 COPY package.json /usr/app/
 COPY package-lock.json /usr/app/
 COPY dist /usr/app/
+COPY resources /usr/app/
 RUN npm i --only=production --ignore-scripts
 
 USER node
