@@ -18,10 +18,12 @@
         "prettier": "prettier --write *.json",
         "pretsc": "rimraf dist",
         "tsc": "tsc --build tsconfig.build.json",
+        "posttsc": "copyfiles -u 1 src/db/quotes.db dist",
         "tweet": "node -r ts-node/register/transpile-only ./src/tweet.ts",
         "auth": "node -r ts-node/register/transpile-only ./src/auth.ts",
         "parse": "node -r ts-node/register/transpile-only ./src/db/parse.ts",
         "quote": "node -r ts-node/register/transpile-only ./src/db/randomQuote.ts",
+        "build:image": "docker build --tag no-context-mashina --progress=plain --no-cache --file Dockerfile .",
         "pre-commit": "lint-staged"
     },
     "repository": {
@@ -53,6 +55,7 @@
         "@types/node": "22.4.0",
         "@typescript-eslint/eslint-plugin": "8.1.0",
         "@typescript-eslint/parser": "8.1.0",
+        "copyfiles": "2.4.1",
         "cross-env": "7.0.3",
         "del": "7.1.0",
         "eslint": "8.57.0",
