@@ -3,13 +3,15 @@ const { glob, readFile, writeFile } = require("node:fs/promises");
 import { Logger } from "../logger";
 import { encryptData } from "./encryption";
 import path from "node:path";
-import { ENCRYPTED_QUOTES_FILE, QUOTES_FILE, ROOT } from "./consts";
+import { ENCRYPTED_QUOTES_FILE, QUOTES_FILE } from "./consts";
+
+const { SOURCE } = process.env;
 
 
 const parse = async () => {
     const allQuotes = new Set<string>();
 
-    const pattern = `${path.resolve(ROOT)}/**/*.txt`;
+    const pattern = `${path.resolve(SOURCE)}/**/*.txt`;
     for await (const entry of glob(pattern)) {
         const lyrics = await readFile(entry, { encoding: "utf8" });
         const quotes = lyrics.split("\r\n\r\n").filter(Boolean);
