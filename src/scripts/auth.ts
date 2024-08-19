@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/no-require-imports
 require("dotenv").config();
 
+import { Logger } from "../logger";
 import { setRefreshToken } from "../refreshTokens";
 import { TwitterApi } from "twitter-api-v2";
 import express from "express";
@@ -18,7 +19,7 @@ const PORT = 23001;
 const app = express();
 
 app.use((req, res, next) => {
-    console.log(`request ${req.method} ${req.url}`);
+    Logger.log(`request ${req.method} ${req.url}`);
     next();
 });
 
@@ -28,7 +29,7 @@ app.get("/auth", async (req, res) => {
         { scope: SCOPE }
     );
     const { url: authUrl, codeVerifier, state } = authLink;
-    console.log("authlink: ", authLink);
+    Logger.log("authlink: ", authLink);
     twitCodeVerifier = codeVerifier;
     twitState = state;
 
@@ -37,7 +38,7 @@ app.get("/auth", async (req, res) => {
 
 // twitter callback url for code request
 app.get("/redirect", async (req, res) => {
-    console.log("response from twitter auth request: ", { body: req.body, qparams: req.query });
+    Logger.log("response from twitter auth request: ", { body: req.body, qparams: req.query });
 
     try {
         const { state, code } = req.query;
@@ -61,16 +62,16 @@ app.get("/redirect", async (req, res) => {
         setRefreshToken(refreshToken);
 
         const message = JSON.stringify({ accessToken, refreshToken, expiresIn }, null, 2);
-        console.log(message);
+        Logger.log(message);
         res.send(message);
     }
     catch (err) {
-        console.log(err.message);
+        Logger.log(err.message);
         res.status(400).send("Invalid verifier or access tokens!" + err.message);
     }
 });
 
 
 app.listen(PORT, () => {
-    console.log(`Server running at ${PORT}`);
+    Logger.log(`Server running at ${PORT}`);
 });

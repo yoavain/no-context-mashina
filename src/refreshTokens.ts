@@ -1,5 +1,6 @@
 import cache from "persistent-cache";
 import { decryptData, encryptData } from "./db/encryption";
+import { Logger } from "./logger";
 
 const { TOKENS_BASE_FOLDER } = process.env;
 
@@ -10,7 +11,7 @@ export const getRefreshToken = () => {
     const cachedToken = refreshTokens.getSync(ID);
     const refreshToken = cachedToken && decryptData(cachedToken);
     if (refreshToken) {
-        console.log("Using cached refresh token");
+        Logger.log("Using cached refresh token");
     }
     return refreshToken;
 };
@@ -18,5 +19,5 @@ export const getRefreshToken = () => {
 export const setRefreshToken = (refreshToken: string) => {
     const encryptedRefreshToken = encryptData(refreshToken);
     refreshTokens.putSync(ID, encryptedRefreshToken);
-    console.log("Saved refresh token to cache");
+    Logger.log("Saved refresh token to cache");
 };
