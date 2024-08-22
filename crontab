@@ -1,1 +1,1 @@
-0 19 * * * node /usr/app/dist/tweet.js 2>&1 | tee -a /usr/app/ext/logs/no-context-mashina.log
+0 7/4 * * * node /usr/app/dist/tweet.js 2>&1 | tee -a /usr/app/ext/logs/no-context-mashina.log
