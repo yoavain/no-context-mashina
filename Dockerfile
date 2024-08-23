@@ -20,4 +20,4 @@ RUN npm i --omit=dev --ignore-scripts
 RUN dos2unix /usr/app/crontab
 RUN crontab /usr/app/crontab
 
-CMD ["crond", "-f", "-l", "0", "-L", "/usr/app/ext/logs/crond.log"]
+CMD ["crond", "-f", "-L", "/usr/app/ext/logs/crond.log"]
