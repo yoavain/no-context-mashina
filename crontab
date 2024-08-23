@@ -1,2 +1,2 @@
 0 7,11,15,19,23 * * * node /usr/app/dist/tweet.js 2>&1 | tee -a /usr/app/ext/logs/no-context-mashina.log
-0/15 * * * * echo `date` Cron is working 2>&1 | tee -a /usr/app/ext/logs/crond-health.log
+0,15,30,45 * * * * echo `date` Cron is working 2>&1 | tee -a /usr/app/ext/logs/crond-health.log
