@@ -1,4 +1,4 @@
-FROM node:20.16.0-alpine3.20@sha256:eb8101caae9ac02229bd64c024919fe3d4504ff7f329da79ca60a04db08cef52
+FROM node:22.7.0-alpine3.20@sha256:ed9736a13b88ba55cbc08c75c9edac8ae7f72840482e40324670b299336680c1
 
 # Timezone
 RUN apk add --no-cache tzdata
@@ -14,10 +14,10 @@ RUN mkdir -p /usr/app/ext/cache/refresh_tokens
 RUN mkdir -p /usr/app/ext/logs
 
 # Dependencies
-RUN npm i --only=production --ignore-scripts
+RUN npm i --omit=dev --ignore-scripts
 
 # Crontab
 RUN dos2unix /usr/app/crontab
 RUN crontab /usr/app/crontab
 
-CMD ["crond", "-f"]
+CMD ["crond", "-f", "-l", "0", "-L", "/usr/app/ext/logs/crond.log"]
