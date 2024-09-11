@@ -67,3 +67,4 @@ typings/
 /resources/quotes.json
 **/refresh_token.json
 /Internal.md
+/tsconfig.tsbuildinfo
