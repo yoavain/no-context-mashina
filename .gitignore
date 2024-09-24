@@ -65,6 +65,6 @@ typings/
 /raw-input/
 /raw-input.zip
 /resources/quotes.json
-**/refresh_token.json
 /Internal.md
 /tsconfig.tsbuildinfo
+**/refresh_tokens/

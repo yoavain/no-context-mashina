@@ -10,11 +10,11 @@ if (!CLIENT_ID || !CLIENT_SECRET) {
 const client = new TwitterApi({ clientId: CLIENT_ID, clientSecret: CLIENT_SECRET });
 
 export const getClient = async () => {
-    const currentRefreshToken = getRefreshToken();
+    const currentRefreshToken = await getRefreshToken();
     if (!currentRefreshToken) {
         throw new Error("No refresh token found");
     }
     const { client: refreshedClient, refreshToken } = await client.refreshOAuth2Token(currentRefreshToken);
-    setRefreshToken(refreshToken);
+    await setRefreshToken(refreshToken);
     return refreshedClient;
 };
