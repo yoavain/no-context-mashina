@@ -17,8 +17,6 @@ CLIENT_SECRET=
 SECRET_KEY=
 SECRET_IV=
 ENCRYPTION_METHOD=
-
-TOKENS_BASE_FOLDER=.
 ```
 
 ## Step 2 - Generate refresh token

@@ -1,13 +1,10 @@
 import newRefreshTokens from "node-persist";
 import { decryptData, encryptData } from "./db/encryption";
 import { Logger } from "./logger";
-import path from "node:path";
-import { REFRESH_TOKEN_KEY } from "./refreshTokenConsts";
-
-const { TOKENS_BASE_FOLDER } = process.env;
+import { REFRESH_TOKEN_KEY, TOKENS_FULL_PATH } from "./refreshTokenConsts";
 
 // @ts-ignore
-newRefreshTokens.initSync({ dir: path.resolve(TOKENS_BASE_FOLDER, "cache", "refresh_tokens") });
+newRefreshTokens.initSync({ dir: TOKENS_FULL_PATH });
 
 export const getRefreshToken = async () => {
     const cachedToken = await newRefreshTokens.getItem(REFRESH_TOKEN_KEY);
