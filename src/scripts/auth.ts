@@ -59,7 +59,7 @@ app.get("/redirect", async (req, res) => {
         });
 
         // Save for persistence
-        setRefreshToken(refreshToken);
+        await setRefreshToken(refreshToken);
 
         const message = JSON.stringify({ accessToken, refreshToken, expiresIn }, null, 2);
         Logger.log(message);
