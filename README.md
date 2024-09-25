@@ -49,7 +49,7 @@ npm run build:image
 (replace XXX with real values)
 
 ```shell
-docker run -d -e CLIENT_ID=XXX -e CLIENT_SECRET=XXX -e SECRET_KEY=XXX -e SECRET_IV=XXX -e ENCRYPTION_METHOD=XXX -e TOKENS_BASE_FOLDER=/usr/app/ext -e NODE_ENV=production -e TZ=Asia/Jerusalem -v no-context-mashina:/usr/app/ext --name no-context-mashina --restart unless-stopped no-context-mashina
+docker run -d -e CLIENT_ID=XXX -e CLIENT_SECRET=XXX -e SECRET_KEY=XXX -e SECRET_IV=XXX -e ENCRYPTION_METHOD=XXX -v no-context-mashina:/usr/app/ext --name no-context-mashina --restart unless-stopped no-context-mashina
 ```
 
 ## Step 5 - (one-time) Copy refresh-token store to container 

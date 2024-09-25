@@ -3,6 +3,11 @@ FROM node:22.9.0-alpine3.20@sha256:298e7594bec0213ac122ca36f30081a17fa80c571413e
 # Timezone
 RUN apk add --no-cache tzdata
 
+# ENV
+ENV TZ=Asia/Jerusalem
+ENV NODE_ENV=production
+ENV TOKENS_BASE_FOLDER=/usr/app/ext
+
 # Files
 WORKDIR /usr/app
 COPY package.json /usr/app/
