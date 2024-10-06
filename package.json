@@ -75,7 +75,7 @@
     "dependencies": {
         "dotenv": "16.4.5",
         "node-persist": "4.0.3",
-        "twitter-api-v2": "1.17.2"
+        "twitter-api-v2": "1.18.0"
     },
     "lint-staged": {
         "*.(ts|js)": [
