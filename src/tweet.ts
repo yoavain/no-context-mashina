@@ -5,7 +5,6 @@ import { Logger } from "./logger";
 import { getRandomQuote } from "./db/randomQuote";
 import { getClient } from "./client";
 
-// eslint-disable-next-line @typescript-eslint/no-require-imports
 import type { TwitterApi } from "twitter-api-v2";
 
 const postTweet = async (twitterClient: TwitterApi, message: string) => {

@@ -1,4 +1,4 @@
-FROM node:22.9.0-alpine3.20@sha256:298e7594bec0213ac122ca36f30081a17fa80c571413e5f5a46d61d9c27c41e4
+FROM node:22.10.0-alpine3.20@sha256:fc95a044b87e95507c60c1f8c829e5d98ddf46401034932499db370c494ef0ff
 
 # Timezone
 RUN apk add --no-cache tzdata
