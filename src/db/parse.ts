@@ -1,5 +1,4 @@
-// eslint-disable-next-line @typescript-eslint/no-require-imports
-const { glob, readFile, writeFile } = require("node:fs/promises");
+import { glob, readFile, writeFile } from "node:fs/promises";
 import { Logger } from "../logger";
 import { encryptData } from "./encryption";
 import path from "node:path";
@@ -27,8 +26,10 @@ const parse = async () => {
 
     const quotesData = JSON.stringify([...allQuotes], null, 2);
     const encryptedQuotes = encryptData(quotesData);
-    await writeFile(QUOTES_FILE, quotesData, { encoding: "utf8" });
-    await writeFile(ENCRYPTED_QUOTES_FILE, encryptedQuotes, { encoding: "utf8" });
+    await Promise.all([
+        writeFile(QUOTES_FILE, quotesData, { encoding: "utf8" }),
+        writeFile(ENCRYPTED_QUOTES_FILE, encryptedQuotes, { encoding: "utf8" })
+    ]);
 };
 
 parse().catch(Logger.error);
