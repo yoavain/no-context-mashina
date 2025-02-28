@@ -12,6 +12,7 @@ ENV TOKENS_BASE_FOLDER=/usr/app/ext
 WORKDIR /usr/app
 COPY package.json /usr/app/
 COPY package-lock.json /usr/app/
+COPY .npmrc /usr/app/
 COPY crontab /usr/app/
 COPY dist /usr/app/dist/
 COPY resources/quotes.db /usr/app/resources/
