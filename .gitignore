@@ -68,3 +68,4 @@ typings/
 /Internal.md
 /tsconfig.tsbuildinfo
 /cache/refresh_tokens/
+/.qodo/
