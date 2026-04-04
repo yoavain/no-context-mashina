@@ -71,7 +71,7 @@ All sensitive data (refresh tokens, quotes database) is encrypted with AES-256-C
 
 ### Deployment
 
-- Dockerized on Node 24.14.0 Alpine.
+- Dockerized on Node 24.14.1 Alpine.
 - Cron runs `npm run tweet` at 07:00, 11:00, 15:00, 19:00, 23:00 Asia/Jerusalem.
 - Token cache is stored in a persistent Docker volume (`/usr/app/ext`).
 

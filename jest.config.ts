@@ -3,8 +3,7 @@ import type { Config } from "@jest/types";
 const config: Config.InitialOptions = {
     transform: {
         "^.+\\.ts$": ["ts-jest", {
-            tsconfig: "tsconfig.json",
-            isolatedModules: true
+            tsconfig: "tsconfig.json"
         }]
     },
     testEnvironment: "node",
@@ -13,6 +12,7 @@ const config: Config.InitialOptions = {
     moduleFileExtensions: ["ts", "js", "json", "node"],
     maxWorkers: "50%",
     verbose: true,
+    forceExit: true,
     collectCoverage: true,
     coverageDirectory: "coverage",
     coverageReporters: [

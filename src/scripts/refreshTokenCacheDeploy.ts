@@ -7,12 +7,11 @@ import { Logger } from "../logger";
 
 
 const copyRefreshTokenCacheIntoContainer = () => {
-    const docker = spawnSync("docker", ["container", "ls", "--filter", "name=no-context-mashina", "--format", "json"], { encoding : "utf8" });
+    const docker = spawnSync("docker", ["container", "ls", "--filter", "name=no-context-mashina", "--format", "{{.ID}}"], { encoding : "utf8" });
     if (docker.error) {
         throw new Error(`Error executing docker command: ${docker.error}`);
     }
-    const out = JSON.parse(docker.stdout);
-    const containerId = out.ID;
+    const containerId = docker.stdout.trim();
     Logger.log(`Copying refresh token cache into container with ID ${containerId} from ${SOURCE_TOKENS_CACHE_FILE} to ${REFRESH_TOKEN_DOCKER_LOCATION}`);
 
     const copy = spawnSync("docker", ["cp", "-a", SOURCE_TOKENS_CACHE_FILE, `${containerId}:${REFRESH_TOKEN_DOCKER_LOCATION}`], { encoding : "utf8" });

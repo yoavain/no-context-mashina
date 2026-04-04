@@ -4,7 +4,10 @@
         "strict": false,
         "esModuleInterop": true,
         "allowJs": true,
-        "noEmit": true
+        "noEmit": true,
+        "rootDir": ".",
+        "isolatedModules": true,
+        "types": ["node", "jest"]
     },
     "include": ["./src/**/*", "./test/**/*", "jest.config.ts", "*.ts", "*.mjs"]
 }
