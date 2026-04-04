@@ -38,8 +38,8 @@ describe("parse.ts", () => {
     });
 
     const loadAndWait = async () => {
-        require("../../src/db/parse");
-        await new Promise<void>((resolve) => setTimeout(resolve, 20));
+        const mod = require("../../src/db/parse");
+        await mod.parse();
     };
 
     it("globs .txt files under the SOURCE directory", async () => {
@@ -85,15 +85,12 @@ describe("parse.ts", () => {
         expect(parsed.every((q: string) => q.length > 0)).toBe(true);
     });
 
-    it("logs an error when a quote exceeds 140 characters", async () => {
-        const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    it("throws when a quote exceeds 140 characters", async () => {
         const longQuote = "a".repeat(141);
         mockGlob.mockReturnValue(asyncFiles("/mock/source/file.txt"));
         mockReadFile.mockResolvedValue(longQuote);
 
-        await loadAndWait();
-
-        expect(consoleSpy).toHaveBeenCalled();
+        await expect(loadAndWait()).rejects.toThrow("Quote exceeds 140 characters");
     });
 
     it("deduplicates identical quotes across files", async () => {

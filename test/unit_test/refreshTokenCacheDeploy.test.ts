@@ -16,8 +16,8 @@ describe("refreshTokenCacheDeploy.ts", () => {
 
     it("calls spawnSync for docker container ls with the correct filter arguments", () => {
         mockSpawnSync
-            .mockReturnValueOnce({ stdout: "abc123\n", error: undefined })
-            .mockReturnValueOnce({ stdout: "copied", error: undefined });
+            .mockReturnValueOnce({ stdout: "abc123\n", status: 0, error: undefined })
+            .mockReturnValueOnce({ stdout: "copied", status: 0, error: undefined });
 
         loadModule();
 
@@ -30,8 +30,8 @@ describe("refreshTokenCacheDeploy.ts", () => {
 
     it("calls spawnSync for docker cp with the container ID from the ls output", () => {
         mockSpawnSync
-            .mockReturnValueOnce({ stdout: "container456\n", error: undefined })
-            .mockReturnValueOnce({ stdout: "copied", error: undefined });
+            .mockReturnValueOnce({ stdout: "container456\n", status: 0, error: undefined })
+            .mockReturnValueOnce({ stdout: "copied", status: 0, error: undefined });
 
         loadModule();
 
@@ -44,8 +44,8 @@ describe("refreshTokenCacheDeploy.ts", () => {
 
     it("trims whitespace from the container ID returned by docker ls", () => {
         mockSpawnSync
-            .mockReturnValueOnce({ stdout: "  trimme123  \n", error: undefined })
-            .mockReturnValueOnce({ stdout: "", error: undefined });
+            .mockReturnValueOnce({ stdout: "  trimme123  \n", status: 0, error: undefined })
+            .mockReturnValueOnce({ stdout: "", status: 0, error: undefined });
 
         loadModule();
 
@@ -54,24 +54,50 @@ describe("refreshTokenCacheDeploy.ts", () => {
     });
 
     it("throws when the docker ls command returns an error", () => {
-        mockSpawnSync.mockReturnValueOnce({ stdout: "", error: new Error("docker not found") });
+        mockSpawnSync.mockReturnValueOnce({ stdout: "", status: null, error: new Error("docker not found") });
 
         expect(() => loadModule()).toThrow("Error executing docker command");
     });
 
+    it("throws when the docker ls command exits with a non-zero status", () => {
+        mockSpawnSync.mockReturnValueOnce({ stdout: "", stderr: "daemon not running", status: 1, error: undefined });
+
+        expect(() => loadModule()).toThrow("docker container ls failed with status 1");
+    });
+
+    it("throws when no container is found", () => {
+        mockSpawnSync.mockReturnValueOnce({ stdout: "\n", status: 0, error: undefined });
+
+        expect(() => loadModule()).toThrow("No running container found");
+    });
+
+    it("throws when multiple containers are found", () => {
+        mockSpawnSync.mockReturnValueOnce({ stdout: "cid1\ncid2\n", status: 0, error: undefined });
+
+        expect(() => loadModule()).toThrow("Expected exactly one container, found 2");
+    });
+
     it("throws when the docker cp command returns an error", () => {
         mockSpawnSync
-            .mockReturnValueOnce({ stdout: "cid\n", error: undefined })
-            .mockReturnValueOnce({ stdout: "", error: new Error("permission denied") });
+            .mockReturnValueOnce({ stdout: "cid\n", status: 0, error: undefined })
+            .mockReturnValueOnce({ stdout: "", status: null, error: new Error("permission denied") });
 
         expect(() => loadModule()).toThrow("Error executing copy command");
+    });
+
+    it("throws when the docker cp command exits with a non-zero status", () => {
+        mockSpawnSync
+            .mockReturnValueOnce({ stdout: "cid\n", status: 0, error: undefined })
+            .mockReturnValueOnce({ stdout: "", stderr: "no such file", status: 1, error: undefined });
+
+        expect(() => loadModule()).toThrow("docker cp failed with status 1");
     });
 
     it("logs the copy operation details before executing cp", () => {
         const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
         mockSpawnSync
-            .mockReturnValueOnce({ stdout: "cid123\n", error: undefined })
-            .mockReturnValueOnce({ stdout: "", error: undefined });
+            .mockReturnValueOnce({ stdout: "cid123\n", status: 0, error: undefined })
+            .mockReturnValueOnce({ stdout: "", status: 0, error: undefined });
 
         loadModule();
 
@@ -82,8 +108,8 @@ describe("refreshTokenCacheDeploy.ts", () => {
     it("logs success message after cp completes", () => {
         const consoleSpy = jest.spyOn(console, "log").mockImplementation(() => {});
         mockSpawnSync
-            .mockReturnValueOnce({ stdout: "cid\n", error: undefined })
-            .mockReturnValueOnce({ stdout: "", error: undefined });
+            .mockReturnValueOnce({ stdout: "cid\n", status: 0, error: undefined })
+            .mockReturnValueOnce({ stdout: "", status: 0, error: undefined });
 
         loadModule();
 

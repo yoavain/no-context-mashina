@@ -7,7 +7,7 @@ import { ENCRYPTED_QUOTES_FILE, QUOTES_FILE } from "./consts";
 const { SOURCE } = process.env;
 
 
-const parse = async () => {
+export const parse = async () => {
     const allQuotes = new Set<string>();
 
     const pattern = `${path.resolve(SOURCE)}/**/*.txt`;
@@ -32,4 +32,6 @@ const parse = async () => {
     ]);
 };
 
-parse().catch(Logger.error);
+if (require.main === module) {
+    parse().catch(Logger.error);
+}
