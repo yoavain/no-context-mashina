@@ -161,5 +161,14 @@ export default [{
         "one-var": ["error", "never"]
     }
 }, {
+    files: ["test/**/*.ts", "test/**/*.js"],
+    rules: {
+        "@typescript-eslint/no-require-imports": "off",
+        "@typescript-eslint/no-var-requires": "off",
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/consistent-type-imports": "off",
+        "max-lines-per-function": "off"
+    }
+}, {
     files: ["**/.js", "**/.ts"]
 }];

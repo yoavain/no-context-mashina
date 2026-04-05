@@ -29,7 +29,7 @@ app.get("/auth", async (req, res) => {
         { scope: SCOPE }
     );
     const { url: authUrl, codeVerifier, state } = authLink;
-    Logger.log("authlink: ", authLink);
+    Logger.log("authlink url: ", authUrl);
     twitCodeVerifier = codeVerifier;
     twitState = state;
 
@@ -75,3 +75,5 @@ app.get("/redirect", async (req, res) => {
 app.listen(PORT, () => {
     Logger.log(`Server running at ${PORT}`);
 });
+
+export { app };

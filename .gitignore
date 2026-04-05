@@ -69,3 +69,5 @@ typings/
 /tsconfig.tsbuildinfo
 /cache/refresh_tokens/
 /.qodo/
+/docs/plan/
+/tsconfig.build.tsbuildinfo
