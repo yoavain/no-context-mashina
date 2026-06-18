@@ -71,3 +71,4 @@ typings/
 /.qodo/
 /docs/plan/
 /tsconfig.build.tsbuildinfo
+/.claude/
