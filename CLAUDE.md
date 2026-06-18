@@ -2,6 +2,8 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+> **Docs split:** [`README.md`](./README.md) is the operator runbook — environment setup, the one-time OAuth flow, building/starting/updating the Docker container, and rebuilding the encrypted quotes DB. **CLAUDE.md** (this file) covers codebase architecture, the module map, and code conventions — what you need to *change the code*, not to *operate the bot*. Keep operational steps in the README and link to them from here instead of duplicating.
+
 ## Project Overview
 
 **no-context-mashina** is a Twitter/X bot that posts random song lyrics or quotes at scheduled intervals. It uses OAuth 2.0 for authentication, AES-256-CBC encryption for storing tokens and the quotes database, and runs in Docker with cron scheduling.
@@ -40,7 +42,7 @@ npm run build:image
 npm run copy-tokens-to-container
 ```
 
-All scripts run TypeScript directly via `ts-node/register/transpile-only` — no separate compile step needed for development.
+All scripts run TypeScript directly via `ts-node/register/transpile-only` — no separate compile step needed for development. This is a catalog of the individual scripts; [README.md](./README.md) covers the operational sequences that chain them (deploy/update the container, rebuild the quotes DB).
 
 ## Architecture
 
@@ -48,7 +50,7 @@ All scripts run TypeScript directly via `ts-node/register/transpile-only` — no
 
 1. **Auth (one-time):** `scripts/auth.ts` spins up an Express server on port 23001, drives the OAuth 2.0 PKCE flow, and saves the encrypted refresh token via `node-persist`.
 2. **Tweet:** `tweet.ts` (entry point) → `client.ts` (build Twitter client, refresh token) → `db/randomQuote.ts` (decrypt and pick a random quote) → post tweet.
-3. **Quote DB:** Source `.txt` files are parsed by `db/parse.ts` (split on double newlines, filter ≤140 chars), encrypted, and saved to `resources/quotes.db`.
+3. **Quote DB:** Source `.txt` files are parsed by `db/parse.ts` — split on blank lines, de-duplicated, and validated (any quote >140 chars **throws**, it is not filtered out). The result is written both as plaintext `resources/quotes.json` (gitignored) and encrypted `resources/quotes.db` (baked into the image). See [README.md](./README.md) for the rebuild/redeploy steps.
 
 ### Key Modules
 
@@ -71,9 +73,11 @@ All sensitive data (refresh tokens, quotes database) is encrypted with AES-256-C
 
 ### Deployment
 
-- Dockerized on Node 24.14.1 Alpine.
-- Cron runs `npm run tweet` at 07:00, 11:00, 15:00, 19:00, 23:00 Asia/Jerusalem.
-- Token cache is stored in a persistent Docker volume (`/usr/app/ext`).
+- Dockerized on Node 24.14.1 Alpine; the container entrypoint is `crond`, which runs the compiled `dist/tweet.js`.
+- The schedule lives in [`crontab`](./crontab) (currently 5×/day, Asia/Jerusalem) — that file is the source of truth, not a list here.
+- `resources/quotes.db` is baked into the image at build time; the token cache and logs persist in the `/usr/app/ext` Docker volume.
+
+For the build/run/update commands and the one-time token bootstrap, see [README.md](./README.md).
 
 ## Required Environment Variables
 
