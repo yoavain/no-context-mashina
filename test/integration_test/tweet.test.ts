@@ -36,7 +36,8 @@ describe("Tweet pipeline — end to end (mocked Twitter API)", () => {
         }));
 
         jest.doMock("node:fs/promises", () => ({
-            readFile: jest.fn().mockResolvedValue(encryptedQuotesFixture)
+            readFile: jest.fn().mockResolvedValue(encryptedQuotesFixture),
+            writeFile: jest.fn().mockResolvedValue(undefined)
         }));
     });
 
@@ -94,7 +95,8 @@ describe("Tweet pipeline — end to end (mocked Twitter API)", () => {
         expect(messages.some((m) => m.includes("tweet-123"))).toBe(true);
     });
 
-    it("logs error but does not rethrow when v2.tweet rejects", async () => {
+    it("logs the error and sets a non-zero exit code when v2.tweet rejects", async () => {
+        const previousExitCode = process.exitCode;
         const mockRejectedV2Tweet = jest.fn().mockRejectedValue(new Error("rate limited"));
         const mockRefreshedClient = { v2: { tweet: mockRejectedV2Tweet } };
 
@@ -123,5 +125,12 @@ describe("Tweet pipeline — end to end (mocked Twitter API)", () => {
             "Error posting tweet:",
             expect.any(Error)
         );
+
+        // Wait for the async catch handler to finish writing the run status
+        await new Promise((r) => setImmediate(r));
+        expect(process.exitCode).toBe(1);
+
+        // Restore, so a failing tweet in a test does not fail the whole jest run
+        process.exitCode = previousExitCode;
     });
 });

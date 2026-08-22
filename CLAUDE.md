@@ -65,6 +65,8 @@ All scripts run TypeScript directly via `ts-node/register/transpile-only` — no
 | `src/db/parse.ts` | Parses source `.txt` files into the encrypted quotes database |
 | `src/scripts/auth.ts` | One-time OAuth setup server |
 | `src/scripts/refreshTokenCacheDeploy.ts` | Copies token cache into Docker container |
+| `src/runStatus.ts` | Persists the last run result (`ext/last-run.json`) for the healthcheck |
+| `src/scripts/healthcheck.ts` | Reads the last run status; exits non-zero and pushes up/down to uptime-kuma |
 | `src/logger.ts` | Timestamp-prefixed console logger |
 
 ### Encryption
@@ -90,6 +92,8 @@ SECRET_IV          # 16-char hex IV for AES-256-CBC
 ENCRYPTION_METHOD  # e.g. aes-256-cbc
 SOURCE             # Path to directory containing lyrics .txt files (for parse script)
 TOKENS_BASE_FOLDER # Optional; base folder for token cache (defaults to ".")
+HEALTHCHECK_URL    # Optional; uptime-kuma Push monitor URL. Empty disables alerting.
+HEALTHCHECK_MAX_AGE_HOURS # Optional; hours before a successful run counts as stale (default 9)
 ```
 
 ## Code Style
