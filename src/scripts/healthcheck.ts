@@ -1,10 +1,10 @@
 import { Logger } from "../logger";
-import { DEFAULT_MAX_AGE_HOURS, isStale, readRunStatus, RUN_STATUS_FILE } from "../runStatus";
+import { isStale, readRunStatus, resolveMaxAgeHours, RUN_STATUS_FILE } from "../runStatus";
 
 const PUSH_TIMEOUT_MS = 10000;
 const MAX_MSG_LENGTH = 200;
 
-const maxAgeHours = Number(process.env.HEALTHCHECK_MAX_AGE_HOURS) || DEFAULT_MAX_AGE_HOURS;
+const maxAgeHours = resolveMaxAgeHours(process.env.HEALTHCHECK_MAX_AGE_HOURS);
 
 const pushStatus = async (status: "up" | "down", msg: string) => {
     const { HEALTHCHECK_URL } = process.env;
