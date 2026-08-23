@@ -29,6 +29,12 @@ ENCRYPTION_METHOD=
 # Only needed for `npm run parse` (rebuilding the quotes DB):
 # path to the cloned no-context-mashina-lyrics folder
 SOURCE=
+
+# Optional: uptime-kuma Push monitor URL. The healthcheck cron pushes up/down here.
+# Leave it empty to disable alerting.
+HEALTHCHECK_URL=
+# Optional: hours before a successful run counts as stale. Default 9.
+HEALTHCHECK_MAX_AGE_HOURS=
 ```
 
 > `.env` is gitignored. Keep your real credentials there (or in your shell/CI secret store) and nowhere else.
@@ -71,6 +77,7 @@ docker run -d \
   -e TOKENS_BASE_FOLDER=/usr/app/ext \
   -e NODE_ENV=production \
   -e TZ=Asia/Jerusalem \
+  -e HEALTHCHECK_URL=<uptime-kuma-push-url> \
   -v no-context-mashina:/usr/app/ext \
   --name no-context-mashina \
   --restart unless-stopped \

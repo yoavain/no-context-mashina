@@ -1,4 +1,4 @@
-FROM node:24.16.0-alpine3.24@sha256:21f403ab171f2dc89bad4dd69d7721bfd15f084ccb46cdd225f31f2bc59b5c9a
+FROM node:24.19.0-alpine3.24@sha256:d32cdf619f63fe0471182d08996dd516c6275bb5fd31ae06e55a570bd9e1ad43
 
 # Timezone
 RUN apk add --no-cache tzdata
@@ -25,5 +25,9 @@ RUN npm i --omit=dev --ignore-scripts
 # Crontab
 RUN dos2unix /usr/app/crontab
 RUN crontab /usr/app/crontab
+
+# Healthcheck: fails when the last tweet run failed, or when it went stale
+HEALTHCHECK --interval=5m --timeout=30s --start-period=9h --retries=2 \
+  CMD node /usr/app/dist/scripts/healthcheck.js || exit 1
 
 CMD ["crond", "-f", "-L", "/usr/app/ext/logs/crond.log"]
